@@ -1,20 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2816 1536" shape-rendering="crispEdges">
-  <!-- Main top block -->
-  <rect x="1254" y="236" width="308" height="108" fill="#6B3E1C"/>
-  <!-- Highlight streak -->
-  <rect x="1340" y="236" width="96" height="34" fill="#8B5A2E"/>
-  <rect x="1360" y="248" width="56" height="12" fill="#A07040"/>
-  <!-- Shadow underside of top -->
-  <rect x="1254" y="316" width="308" height="20" fill="#4A2910"/>
-  <!-- Left temple -->
-  <rect x="1192" y="236" width="76" height="176" fill="#6B3E1C"/>
-  <rect x="1192" y="386" width="76" height="20" fill="#4A2910"/>
+  <!-- Main top cap (across full head width) -->
+  <rect x="1220" y="235" width="376" height="106" fill="#6B3E1C"/>
+  <!-- Highlight on top -->
+  <rect x="1330" y="235" width="120" height="36" fill="#8B5A2E"/>
+  <rect x="1358" y="247" width="64" height="14" fill="#A07040"/>
+  <!-- Shadow at bottom of cap -->
+  <rect x="1220" y="313" width="376" height="22" fill="#4A2910"/>
+  <!-- Left temple (down to above eye level) -->
+  <rect x="1152" y="235" width="90" height="188" fill="#6B3E1C"/>
+  <rect x="1152" y="399" width="90" height="16" fill="#4A2910"/>
   <!-- Right temple -->
-  <rect x="1548" y="236" width="76" height="176" fill="#6B3E1C"/>
-  <rect x="1548" y="386" width="76" height="20" fill="#4A2910"/>
-  <!-- Forehead bangs (covers upper forehead) -->
-  <rect x="1292" y="332" width="232" height="56" fill="#6B3E1C"/>
-  <rect x="1292" y="364" width="232" height="18" fill="#4A2910"/>
-  <!-- Small front cowlick -->
-  <rect x="1388" y="236" width="40" height="52" fill="#7A4E28"/>
+  <rect x="1574" y="235" width="90" height="188" fill="#6B3E1C"/>
+  <rect x="1574" y="399" width="90" height="16" fill="#4A2910"/>
+  <!-- Forehead fringe (slight overhang) -->
+  <rect x="1268" y="335" width="280" height="52" fill="#6B3E1C"/>
+  <rect x="1268" y="363" width="280" height="18" fill="#4A2910"/>
 </svg>

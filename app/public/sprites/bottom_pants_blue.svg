@@ -1,21 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2816 1536" shape-rendering="crispEdges">
   <!-- Waistband -->
-  <rect x="1218" y="886" width="380" height="36" fill="#0D3399"/>
-  <!-- Belt highlight -->
-  <rect x="1218" y="886" width="380" height="6" fill="#1444AA"/>
-  <!-- Pants body -->
-  <rect x="1218" y="920" width="380" height="72" fill="#1144BB"/>
-  <!-- Left leg -->
-  <rect x="1218" y="990" width="168" height="210" fill="#1144BB"/>
-  <rect x="1218" y="990" width="48" height="210" fill="#1E55CC"/>
-  <rect x="1338" y="990" width="48" height="210" fill="#0933AA"/>
-  <!-- Right leg -->
-  <rect x="1430" y="990" width="168" height="210" fill="#1144BB"/>
-  <rect x="1430" y="990" width="48" height="210" fill="#1E55CC"/>
-  <rect x="1550" y="990" width="48" height="210" fill="#0933AA"/>
+  <rect x="1210" y="906" width="396" height="38" fill="#0D3399"/>
+  <rect x="1210" y="906" width="396" height="7" fill="#1444AA"/>
+  <!-- Pants upper body -->
+  <rect x="1210" y="942" width="396" height="68" fill="#1144BB"/>
   <!-- Crotch seam -->
-  <rect x="1384" y="920" width="48" height="72" fill="#0D3399"/>
+  <rect x="1390" y="942" width="36" height="68" fill="#0D3399"/>
+  <!-- Left leg -->
+  <rect x="1210" y="1008" width="182" height="200" fill="#1144BB"/>
+  <rect x="1210" y="1008" width="52" height="200" fill="#1E55CC"/>
+  <rect x="1340" y="1008" width="52" height="200" fill="#0933AA"/>
+  <!-- Right leg -->
+  <rect x="1424" y="1008" width="182" height="200" fill="#1144BB"/>
+  <rect x="1424" y="1008" width="52" height="200" fill="#1E55CC"/>
+  <rect x="1554" y="1008" width="52" height="200" fill="#0933AA"/>
   <!-- Leg cuffs -->
-  <rect x="1218" y="1176" width="168" height="20" fill="#0D3399"/>
-  <rect x="1430" y="1176" width="168" height="20" fill="#0D3399"/>
+  <rect x="1210" y="1186" width="182" height="20" fill="#0D3399"/>
+  <rect x="1424" y="1186" width="182" height="20" fill="#0D3399"/>
 </svg>

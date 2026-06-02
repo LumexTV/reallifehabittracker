@@ -1,23 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2816 1536" shape-rendering="crispEdges">
-  <!-- Main top block -->
-  <rect x="1240" y="236" width="336" height="128" fill="#1A1520"/>
-  <!-- Highlight streak -->
-  <rect x="1348" y="236" width="100" height="38" fill="#2E2838"/>
-  <rect x="1368" y="250" width="60" height="14" fill="#3A3448"/>
-  <!-- Shadow underside top -->
-  <rect x="1240" y="328" width="336" height="22" fill="#0E0A18"/>
-  <!-- Forehead bangs -->
-  <rect x="1270" y="346" width="276" height="60" fill="#1A1520"/>
-  <rect x="1270" y="380" width="276" height="20" fill="#0E0A18"/>
-  <!-- Left long side strand -->
-  <rect x="1172" y="236" width="86" height="520" fill="#1A1520"/>
-  <rect x="1172" y="236" width="22" height="520" fill="#2E2838"/>
-  <rect x="1172" y="720" width="86" height="140" fill="#1A1520"/>
-  <!-- Right long side strand -->
-  <rect x="1558" y="236" width="86" height="520" fill="#1A1520"/>
-  <rect x="1622" y="236" width="22" height="520" fill="#2E2838"/>
-  <rect x="1558" y="720" width="86" height="140" fill="#1A1520"/>
-  <!-- Strand tips fade -->
-  <rect x="1186" y="830" width="72" height="30" fill="#0E0A18"/>
-  <rect x="1558" y="830" width="72" height="30" fill="#0E0A18"/>
+  <!-- Main top cap -->
+  <rect x="1206" y="235" width="404" height="118" fill="#1A1520"/>
+  <!-- Highlight -->
+  <rect x="1332" y="235" width="118" height="40" fill="#2E2838"/>
+  <rect x="1356" y="249" width="70" height="16" fill="#3A3448"/>
+  <!-- Shadow bottom of cap -->
+  <rect x="1206" y="325" width="404" height="22" fill="#0E0A18"/>
+  <!-- Left long strand (flows down past shoulders) -->
+  <rect x="1134" y="235" width="98" height="612" fill="#1A1520"/>
+  <rect x="1134" y="235" width="22" height="580" fill="#2E2838"/>
+  <rect x="1134" y="815" width="98" height="32" fill="#0E0A18"/>
+  <!-- Right long strand -->
+  <rect x="1584" y="235" width="98" height="612" fill="#1A1520"/>
+  <rect x="1660" y="235" width="22" height="580" fill="#2E2838"/>
+  <rect x="1584" y="815" width="98" height="32" fill="#0E0A18"/>
+  <!-- Forehead fringe -->
+  <rect x="1252" y="341" width="312" height="62" fill="#1A1520"/>
+  <rect x="1252" y="379" width="312" height="18" fill="#0E0A18"/>
 </svg>
