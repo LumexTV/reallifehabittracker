@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAuthStore } from '../store/auth'
 import { useProfileStore } from '../store/profile'
 import { useCharacterStore } from '../store/character'
@@ -43,8 +43,7 @@ export default function Charakter() {
     fetch(userId)
   }, [userId])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [dir, setDir] = useState<0 | 1 | 2>(1) // 0=left, 1=front, 2=right
-  const SPRITES = ['/sprites/base left.png', '/sprites/base.png', '/sprites/base right.png']
+  const SPRITES = ['/sprites/base.png']
 
   const cosmeticMap = useMemo(
     () => new Map(allCosmetics.map(c => [c.id, c])),
@@ -85,15 +84,8 @@ export default function Charakter() {
           equipped={equipped}
           cosmetics={cosmeticMap}
           size={256}
-          src={SPRITES[dir]}
+          src={SPRITES[0]}
         />
-
-        {/* Direction buttons */}
-        <div style={{ display: 'flex', gap: 8, marginTop: 16, alignItems: 'center' }}>
-          <DirBtn active={dir === 0} onClick={() => setDir(0)}>◀</DirBtn>
-          <DirBtn active={dir === 1} onClick={() => setDir(1)}>●</DirBtn>
-          <DirBtn active={dir === 2} onClick={() => setDir(2)}>▶</DirBtn>
-        </div>
 
         {profile && (
           <div style={{ marginTop: 14, textAlign: 'center' }}>
@@ -256,21 +248,3 @@ export default function Charakter() {
   )
 }
 
-function DirBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        width: 36, height: 36, borderRadius: 10, border: 'none',
-        background: active ? 'rgba(224,178,67,.15)' : 'var(--panel-2)',
-        color: active ? 'var(--gold)' : 'var(--ink-dim)',
-        fontSize: active ? 14 : 12,
-        cursor: 'pointer', fontFamily: 'inherit',
-        outline: active ? '1px solid rgba(224,178,67,.3)' : '1px solid var(--line)',
-        transition: '.12s',
-      }}
-    >
-      {children}
-    </button>
-  )
-}
