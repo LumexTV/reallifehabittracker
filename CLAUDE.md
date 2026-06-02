@@ -56,6 +56,7 @@ store/
 components/
   AppLayout.tsx      ← Bottom-Nav (Home/Charakter/Shop/Awards/Logout)
   HeroPanel.tsx      ← XP/HP/Gold-Bars + Attribut-Grid
+  PixelAvatar.tsx    ← Layer-Renderer (src= direktes Sprite ODER layer-basiert); animate= Idle-Anim
   TaskTabs.tsx       ← Tab-Wechsel Habits/Dailies/Quests
   task/
     AddTaskForm.tsx  ← Formular für neue Tasks
@@ -66,12 +67,21 @@ components/
   LevelUpOverlay.tsx ← Fullscreen Level-Up Animation
   ProtectedRoute.tsx ← Auth-Guard
 
+store/
+  character.ts       ← fetch character+inventory, equip/unequip, auto-Starter-Kit-Grant
+
 pages/
   Login.tsx          ← Email+PW / Register / Magic Link / Google OAuth Tabs
   Home.tsx           ← HeroPanel + TaskTabs + ToastStack + LevelUpOverlay
-  Charakter.tsx      ← Placeholder (Phase 3)
+  Charakter.tsx      ← Avatar-Preview (◀●▶ Richtungen) + Slot-Picker Customizer
   Shop.tsx           ← Placeholder (Phase 4)
   Awards.tsx         ← Placeholder (Phase 5)
+
+public/sprites/
+  base.png           ← Charakter front (eigenes Pixel-Art Sprite, MUSS transparent sein!)
+  base left.png      ← Charakter links
+  base right.png     ← Charakter rechts
+  bg_dungeon.svg / body_beige.svg / ...  ← Placeholder-Layer (austauschbar via DB asset_url)
 ```
 
 ---
@@ -98,6 +108,8 @@ pages/
 - **React Error #185** wurde durch stabilen `userId`-String (statt `user`-Objekt) als useEffect-Dependency behoben + `TOKEN_REFRESHED` in `onAuthStateChange` separiert
 - **Home.tsx** nutzt `useRef` Guard damit `fetchAll` nur einmal pro Mount läuft
 - **`!!profile` als Dependency** ist instabil → `profile?.id` verwenden
+- **Charakter-Sprites müssen transparent sein** — PNGs mit weißem Hintergrund auf dunklem Theme nicht verwendbar; kein CSS-Fix möglich, nur sauberer Export (PNG-24 + Alpha)
+- **Phase 3 Seed:** `phase3_seed.sql` im Supabase SQL-Editor ausführen; fehlende character-Row bei alten Usern mit `INSERT INTO character (user_id) SELECT id FROM profiles ON CONFLICT DO NOTHING` fixen
 
 ---
 
@@ -105,8 +117,8 @@ pages/
 
 - [x] **Phase 1** — Vite Setup, Supabase Auth, geschützte Routes
 - [x] **Phase 2** — Task CRUD, XP/Gold/HP/Streak-Logik, Nightly Reset
-- [ ] **Phase 3** — Pixel-Avatar (Layer-Renderer, LPC-Assets, Customizer)
+- [x] **Phase 3** — PixelAvatar Layer-Renderer, useCharacterStore, Customizer (◀●▶), Cosmetics-Seed, eigene Sprites eingebunden; Idle-Anim vorbereitet (CSS `idle-breathe`), wartet auf transparente PNGs
 - [ ] **Phase 4** — Shop (`purchase_cosmetic` RPC, Gold-Abzug)
 - [ ] **Phase 5** — Awards (Claude Vision Edge Function, Business-Meilensteine)
-- [ ] **Phase 6** — Juice (Animationen, Crits, Sounds, Confetti)
+- [ ] **Phase 6** — Juice (Idle-Animation aktivieren, Crits, Sounds, Confetti)
 - [ ] **Phase 7** — n8n (Nightly-Cron, Telegram-Push, Vision-Webhook)
