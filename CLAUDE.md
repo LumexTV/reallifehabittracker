@@ -56,7 +56,7 @@ store/
 components/
   AppLayout.tsx      ← Bottom-Nav (Home/Charakter/Shop/Awards/Logout)
   HeroPanel.tsx      ← XP/HP/Gold-Bars + Attribut-Grid
-  PixelAvatar.tsx    ← Layer-Renderer (src= direktes Sprite ODER layer-basiert); animate= Idle-Anim
+  PixelAvatar.tsx    ← Layer-Renderer: src+Overlays-Modus (Base-Sprite + Kleidung drüber) ODER reiner Layer-Modus; animate= Idle-Anim
   TaskTabs.tsx       ← Tab-Wechsel Habits/Dailies/Quests
   task/
     AddTaskForm.tsx  ← Formular für neue Tasks
@@ -68,20 +68,30 @@ components/
   ProtectedRoute.tsx ← Auth-Guard
 
 store/
-  character.ts       ← fetch character+inventory, equip/unequip, auto-Starter-Kit-Grant
+  character.ts       ← fetch character+inventory, equip/unequip, purchase (purchase_cosmetic RPC), auto-Starter-Kit-Grant
 
 pages/
   Login.tsx          ← Email+PW / Register / Magic Link / Google OAuth Tabs
   Home.tsx           ← HeroPanel + TaskTabs + ToastStack + LevelUpOverlay
   Charakter.tsx      ← Avatar-Preview (◀●▶ Richtungen) + Slot-Picker Customizer
-  Shop.tsx           ← Placeholder (Phase 4)
+  Shop.tsx           ← Kosmetik-Shop: Karten-Grid, Rarity-Farben, Slot-Filter, Gold-Kauf
   Awards.tsx         ← Placeholder (Phase 5)
 
 public/sprites/
-  base.png           ← Charakter front (eigenes Pixel-Art Sprite, MUSS transparent sein!)
-  base left.png      ← Charakter links
-  base right.png     ← Charakter rechts
-  bg_dungeon.svg / body_beige.svg / ...  ← Placeholder-Layer (austauschbar via DB asset_url)
+  base.png           ← Charakter front, 680×1244 (auf Charakter zugeschnitten)
+  base left.png      ← Charakter links, 680×1244
+  base right.png     ← Charakter rechts, 680×1244
+  base.svg           ← Charakter front als SVG-Vektor (Silhouette, für Koordinaten-Referenz)
+  base-left.svg      ← Charakter links SVG
+  base-right.svg     ← Charakter rechts SVG
+  bg_dungeon.svg     ← Dungeon-Stein-Hintergrund (viewBox="1068 176 680 1244")
+  body_beige.svg     ← Körper-Skin-Layer (starter)
+  bottom_pants_blue.svg ← Blaue Hose (starter)
+  top_shirt_red.svg  ← Rotes Hemd (starter)
+  top_robe_purple.svg ← Purpur-Robe mit Gold-Saum (shop, 200G)
+  hair_brown_short.svg ← Braune Kurzhaare (starter)
+  hair_black_long.svg  ← Schwarze Langhaare (shop, 80G)
+  acc_glasses.svg    ← Silberne Brille (shop, 120G)
 ```
 
 ---
@@ -110,6 +120,9 @@ public/sprites/
 - **`!!profile` als Dependency** ist instabil → `profile?.id` verwenden
 - **Charakter-Sprites müssen transparent sein** — PNGs mit weißem Hintergrund auf dunklem Theme nicht verwendbar; kein CSS-Fix möglich, nur sauberer Export (PNG-24 + Alpha)
 - **Phase 3 Seed:** `phase3_seed.sql` im Supabase SQL-Editor ausführen; fehlende character-Row bei alten Usern mit `INSERT INTO character (user_id) SELECT id FROM profiles ON CONFLICT DO NOTHING` fixen
+- **Phase 4 Shop RPC:** `phase4_shop.sql` im Supabase SQL-Editor ausführen — erstellt `purchase_cosmetic(p_cosmetic_id uuid)` Funktion (atomar: Gold prüfen → abziehen → Inventory eintragen)
+- **Sprite-Koordinatensystem:** Alle Sprites (PNGs + SVGs) sind 680×1244. Cosmetic-SVGs nutzen `viewBox="1068 176 680 1244"` — das ist der Charakter-Ausschnitt aus dem ursprünglichen 2816×1536 Canvas. Koordinaten im SVG bleiben absolut (z.B. Augen links x=1315–1384, y=398–470).
+- **PixelAvatar Modi:** Bei `src` → zeigt Base-Sprite + Overlays (bottom/top/hair/accessory) auf `z=20+`; Hintergrund auf `z=1` mit `objectFit:cover`; bei fehlendem `src` → reiner Layer-Modus mit 👤 Placeholder
 
 ---
 
@@ -117,8 +130,8 @@ public/sprites/
 
 - [x] **Phase 1** — Vite Setup, Supabase Auth, geschützte Routes
 - [x] **Phase 2** — Task CRUD, XP/Gold/HP/Streak-Logik, Nightly Reset
-- [x] **Phase 3** — PixelAvatar Layer-Renderer, useCharacterStore, Customizer (◀●▶), Cosmetics-Seed, eigene Sprites eingebunden; Idle-Anim vorbereitet (CSS `idle-breathe`), wartet auf transparente PNGs
-- [ ] **Phase 4** — Shop (`purchase_cosmetic` RPC, Gold-Abzug)
+- [x] **Phase 3** — PixelAvatar Layer-Renderer, useCharacterStore, Customizer (◀●▶), Cosmetics-Seed, eigene Sprites eingebunden (680×1244); SVG-Layer für alle Cosmetics kalibriert auf Charakter-Bounds
+- [x] **Phase 4** — Shop mit `purchase_cosmetic` RPC (atomar), Karten-Grid UI, Slot-Filter, Gold-Anzeige, Toast-Feedback; SQL: `phase4_shop.sql`
 - [ ] **Phase 5** — Awards (Claude Vision Edge Function, Business-Meilensteine)
 - [ ] **Phase 6** — Juice (Idle-Animation aktivieren, Crits, Sounds, Confetti)
 - [ ] **Phase 7** — n8n (Nightly-Cron, Telegram-Push, Vision-Webhook)
