@@ -61,3 +61,13 @@ body::before {
 
 .bar-fill { transition: width .6s cubic-bezier(.2,.7,.2,1); }
 .pixelated { image-rendering: pixelated; }
+
+@keyframes idle-breathe {
+  0%, 100% { transform: translateY(0px); }
+  40%, 60%  { transform: translateY(-2px); }
+}
+.idle-breathe {
+  animation: idle-breathe 3s ease-in-out infinite;
+  will-change: transform;
+  image-rendering: pixelated;
+}

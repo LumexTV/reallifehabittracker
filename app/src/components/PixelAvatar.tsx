@@ -23,9 +23,11 @@ interface Props {
   equipped: Partial<Record<CosmeticSlot, string | null>>
   cosmetics: Map<string, Cosmetic>
   size?: number
+  src?: string      // Direct sprite — bypasses layer system
+  animate?: boolean // Idle breathing animation
 }
 
-export default function PixelAvatar({ equipped, cosmetics, size = 256 }: Props) {
+export default function PixelAvatar({ equipped, cosmetics, size = 256, src, animate = false }: Props) {
   const radius = Math.round(size * 0.078)
 
   return (
@@ -38,42 +40,48 @@ export default function PixelAvatar({ equipped, cosmetics, size = 256 }: Props) 
       background: '#0d0b14',
       border: '2px solid var(--line)',
       boxShadow: '0 0 40px -10px rgba(224,178,67,.3), inset 0 0 30px rgba(0,0,0,.5)',
-      imageRendering: 'pixelated',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
       flexShrink: 0,
     }}>
-      {/* Silhouette placeholder */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 1,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: size * 0.35, opacity: 0.1, userSelect: 'none',
-        pointerEvents: 'none',
-      }}>
-        👤
-      </div>
+      {src ? (
+        <img
+          src={src}
+          alt=""
+          className={animate ? 'idle-breathe' : 'pixelated'}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+        />
+      ) : (
+        <>
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 1,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: size * 0.35, opacity: 0.1, userSelect: 'none', pointerEvents: 'none',
+          }}>
+            👤
+          </div>
 
-      {SLOT_ORDER.map(slot => {
-        const cosmeticId = equipped[slot]
-        const cosmetic = cosmeticId ? cosmetics.get(cosmeticId) : null
-        if (!cosmetic) return null
-
-        return (
-          <img
-            key={slot}
-            src={cosmetic.asset_url}
-            alt=""
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              imageRendering: 'pixelated',
-              zIndex: SLOT_Z[slot] + 2,
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
-        )
-      })}
+          {SLOT_ORDER.map(slot => {
+            const cosmeticId = equipped[slot]
+            const cosmetic = cosmeticId ? cosmetics.get(cosmeticId) : null
+            if (!cosmetic) return null
+            return (
+              <img
+                key={slot}
+                src={cosmetic.asset_url}
+                alt=""
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  imageRendering: 'pixelated',
+                  zIndex: SLOT_Z[slot] + 2,
+                  objectFit: 'contain',
+                  display: 'block',
+                }}
+              />
+            )
+          })}
+        </>
+      )}
     </div>
   )
 }
