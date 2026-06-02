@@ -1,0 +1,26 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <!-- Left lens tint -->
+  <rect x="24" y="12" width="8" height="7" fill="#4a90b0" opacity="0.35"/>
+  <!-- Right lens tint -->
+  <rect x="34" y="12" width="8" height="7" fill="#4a90b0" opacity="0.35"/>
+  <!-- Left frame top -->
+  <rect x="23" y="11" width="10" height="1" fill="#343434"/>
+  <!-- Left frame bottom -->
+  <rect x="23" y="19" width="10" height="1" fill="#343434"/>
+  <!-- Left frame left -->
+  <rect x="23" y="11" width="1" height="9" fill="#343434"/>
+  <!-- Left frame right -->
+  <rect x="32" y="11" width="1" height="9" fill="#343434"/>
+  <!-- Right frame top -->
+  <rect x="33" y="11" width="10" height="1" fill="#343434"/>
+  <!-- Right frame bottom -->
+  <rect x="33" y="19" width="10" height="1" fill="#343434"/>
+  <!-- Right frame right -->
+  <rect x="42" y="11" width="1" height="9" fill="#343434"/>
+  <!-- Bridge -->
+  <rect x="32" y="14" width="2" height="2" fill="#343434"/>
+  <!-- Left temple -->
+  <rect x="16" y="13" width="7" height="1" fill="#343434"/>
+  <!-- Right temple -->
+  <rect x="43" y="13" width="7" height="1" fill="#343434"/>
+</svg>

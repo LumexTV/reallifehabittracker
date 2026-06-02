@@ -1,0 +1,15 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <!-- Top hair -->
+  <rect x="20" y="2" width="24" height="8" fill="#6a3c10"/>
+  <!-- Left side flap -->
+  <rect x="18" y="4" width="5" height="18" fill="#5a3008"/>
+  <!-- Right side flap -->
+  <rect x="41" y="4" width="5" height="18" fill="#5a3008"/>
+  <!-- Back coverage -->
+  <rect x="20" y="8" width="24" height="8" fill="#5a3008"/>
+  <!-- Front hairline highlight -->
+  <rect x="22" y="4" width="20" height="3" fill="#7a4c1e"/>
+  <!-- Ear sideburn area -->
+  <rect x="18" y="18" width="5" height="4" fill="#6a3c10"/>
+  <rect x="41" y="18" width="5" height="4" fill="#6a3c10"/>
+</svg>
