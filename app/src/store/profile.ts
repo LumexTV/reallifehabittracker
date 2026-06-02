@@ -20,7 +20,16 @@ export const useProfileStore = create<ProfileState>((set) => ({
 
   fetch: async (userId) => {
     set({ loading: true })
-    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
+    let { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
+
+    // Trigger might have failed on first login — create profile manually as fallback
+    if (!data) {
+      await supabase.from('profiles').insert({ id: userId })
+      await supabase.from('character').insert({ user_id: userId })
+      const result = await supabase.from('profiles').select('*').eq('id', userId).single()
+      data = result.data
+    }
+
     set({ profile: data, loading: false })
   },
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAuthStore } from '../store/auth'
 import { useProfileStore } from '../store/profile'
 import { useTasksStore } from '../store/tasks'
@@ -8,22 +8,30 @@ import ToastStack from '../components/ToastStack'
 import LevelUpOverlay from '../components/LevelUpOverlay'
 
 export default function Home() {
-  // userId als primitiver String — kein Re-render bei Token-Refresh
-  const userId = useAuthStore(s => s.user?.id)
-  const { profile, loading: profileLoading, fetch: fetchProfile } = useProfileStore()
-  const { fetchAll, runDailyResetIfNeeded, loading: tasksLoading, attrTotals } = useTasksStore()
+  const userId      = useAuthStore(s => s.user?.id)
+  const profile     = useProfileStore(s => s.profile)
+  const profileLoad = useProfileStore(s => s.loading)
+  const fetchProfile = useProfileStore(s => s.fetch)
+  const attrTotals  = useTasksStore(s => s.attrTotals)
+  const tasksLoad   = useTasksStore(s => s.loading)
+  const fetchAll    = useTasksStore(s => s.fetchAll)
+  const resetCheck  = useTasksStore(s => s.runDailyResetIfNeeded)
+
+  const tasksInitialized = useRef(false)
 
   useEffect(() => {
     if (!userId) return
     fetchProfile(userId)
+    tasksInitialized.current = false
   }, [userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!userId || !profile) return
-    fetchAll(userId).then(() => runDailyResetIfNeeded(userId))
-  }, [userId, !!profile]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!userId || !profile?.id || tasksInitialized.current) return
+    tasksInitialized.current = true
+    fetchAll(userId).then(() => resetCheck(userId))
+  }, [userId, profile?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (profileLoading || tasksLoading) {
+  if (profileLoad || tasksLoad) {
     return (
       <div style={{ textAlign: 'center', padding: 60, position: 'relative', zIndex: 2 }}>
         <div className="font-cinzel" style={{ color: 'var(--gold)', letterSpacing: 3, fontSize: 16 }}>LADEN…</div>
