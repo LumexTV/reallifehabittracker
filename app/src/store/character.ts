@@ -4,6 +4,8 @@ import type { Database, CosmeticSlot } from '../lib/database.types'
 
 type Cosmetic = Database['public']['Tables']['cosmetics']['Row']
 
+export type PurchaseResult = { ok: true; goldSpent: number } | { ok: false; reason: 'gold' | 'owned' | 'invalid' | 'error' }
+
 interface CharacterState {
   equipped: Partial<Record<CosmeticSlot, string | null>>
   inventory: Cosmetic[]
@@ -11,6 +13,7 @@ interface CharacterState {
   loading: boolean
   fetch: (userId: string) => Promise<void>
   equip: (userId: string, slot: CosmeticSlot, cosmeticId: string | null) => Promise<void>
+  purchase: (cosmeticId: string) => Promise<PurchaseResult>
   grantStarterKit: (userId: string) => Promise<void>
 }
 
@@ -57,6 +60,22 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
     if (inventory.length === 0 && allCosmetics.some(c => c.unlock_type === 'starter')) {
       await get().grantStarterKit(userId)
     }
+  },
+
+  purchase: async (cosmeticId) => {
+    const { data, error } = await supabase.rpc('purchase_cosmetic', { p_cosmetic_id: cosmeticId })
+    if (error) return { ok: false, reason: 'error' as const }
+
+    const res = data as { ok: boolean; reason?: string; gold_spent?: number }
+    if (!res.ok) {
+      const reason = (['gold', 'owned', 'invalid'] as const).find(r => r === res.reason) ?? 'error'
+      return { ok: false, reason }
+    }
+
+    const cosmetic = get().allCosmetics.find(c => c.id === cosmeticId)
+    if (cosmetic) set(s => ({ inventory: [...s.inventory, cosmetic] }))
+
+    return { ok: true, goldSpent: res.gold_spent ?? 0 }
   },
 
   equip: async (userId, slot, cosmeticId) => {
