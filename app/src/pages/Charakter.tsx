@@ -43,7 +43,6 @@ export default function Charakter() {
     fetch(userId)
   }, [userId])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const SPRITES = ['/sprites/base.png']
 
   const cosmeticMap = useMemo(
     () => new Map(allCosmetics.map(c => [c.id, c])),
@@ -84,7 +83,6 @@ export default function Charakter() {
           equipped={equipped}
           cosmetics={cosmeticMap}
           size={256}
-          src={SPRITES[0]}
         />
 
         {profile && (
