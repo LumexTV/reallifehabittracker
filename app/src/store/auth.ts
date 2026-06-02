@@ -23,7 +23,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     const { data: { session } } = await supabase.auth.getSession()
     set({ session, user: session?.user ?? null, loading: false })
     supabase.auth.onAuthStateChange((_event, session) => {
-      set({ session, user: session?.user ?? null })
+      // TOKEN_REFRESHED: session updaten aber user-Objekt nur wechseln wenn ID sich ändert
+      set(s => ({
+        session,
+        user: session?.user?.id !== s.user?.id
+          ? (session?.user ?? null)
+          : s.user,
+      }))
     })
   },
 

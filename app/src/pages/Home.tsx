@@ -8,19 +8,20 @@ import ToastStack from '../components/ToastStack'
 import LevelUpOverlay from '../components/LevelUpOverlay'
 
 export default function Home() {
-  const user       = useAuthStore(s => s.user)
+  // userId als primitiver String — kein Re-render bei Token-Refresh
+  const userId = useAuthStore(s => s.user?.id)
   const { profile, loading: profileLoading, fetch: fetchProfile } = useProfileStore()
   const { fetchAll, runDailyResetIfNeeded, loading: tasksLoading, attrTotals } = useTasksStore()
 
   useEffect(() => {
-    if (!user) return
-    fetchProfile(user.id)
-  }, [user, fetchProfile])
+    if (!userId) return
+    fetchProfile(userId)
+  }, [userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!user || !profile) return
-    fetchAll(user.id).then(() => runDailyResetIfNeeded(user.id))
-  }, [user?.id, !!profile]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!userId || !profile) return
+    fetchAll(userId).then(() => runDailyResetIfNeeded(userId))
+  }, [userId, !!profile]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (profileLoading || tasksLoading) {
     return (

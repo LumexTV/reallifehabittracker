@@ -98,7 +98,8 @@ export const useTasksStore = create<TasksState>((set, get) => ({
       dir: dir ?? 'pos' as HabitDir,
       streak: 0, done: false, count: 0, attr_points: 0,
     }
-    const { data } = await supabase.from('tasks').insert(insert).select().single()
+    const { data, error } = await supabase.from('tasks').insert(insert).select().single()
+    if (error) { console.error('addTask:', error.message); return }
     if (data) {
       set(s => {
         const tasks = [data, ...s.tasks]
