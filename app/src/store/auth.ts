@@ -22,16 +22,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   init: async () => {
     const { data: { session } } = await supabase.auth.getSession()
     set({ session, user: session?.user ?? null, loading: false })
-    supabase.auth.onAuthStateChange((_event, session) => {
-      // setTimeout(0) verhindert dass der Zustand-Update in Reacts Render-Zyklus fällt
-      setTimeout(() => {
-        set(s => ({
-          session,
-          user: session?.user?.id !== s.user?.id
-            ? (session?.user ?? null)
-            : s.user,
-        }))
-      }, 0)
+    supabase.auth.onAuthStateChange((event, session) => {
+      // Ignore token refresh — only update user object when identity actually changes
+      if (event === 'TOKEN_REFRESHED') {
+        set({ session })
+        return
+      }
+      set({
+        session,
+        user: session?.user ?? null,
+      })
     })
   },
 
