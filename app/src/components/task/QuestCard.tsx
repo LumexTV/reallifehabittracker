@@ -10,7 +10,8 @@ const DIFF_LABEL: Record<string, string> = { easy: 'leicht', medium: 'mittel', h
 function attrIcon(id: string) { return ATTRS.find(a => a.id === id)?.ico ?? '' }
 
 export default function QuestCard({ task }: { task: Task }) {
-  const { completeQuest, deleteTask } = useTasksStore(s => ({ completeQuest: s.completeQuest, deleteTask: s.deleteTask }))
+  const completeQuest = useTasksStore(s => s.completeQuest)
+  const deleteTask    = useTasksStore(s => s.deleteTask)
 
   return (
     <div style={{

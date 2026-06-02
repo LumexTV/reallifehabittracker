@@ -10,7 +10,8 @@ const DIFF_LABEL: Record<string, string> = { easy: 'leicht', medium: 'mittel', h
 function attrIcon(id: string) { return ATTRS.find(a => a.id === id)?.ico ?? '' }
 
 export default function DailyCard({ task }: { task: Task }) {
-  const { toggleDaily, deleteTask } = useTasksStore(s => ({ toggleDaily: s.toggleDaily, deleteTask: s.deleteTask }))
+  const toggleDaily = useTasksStore(s => s.toggleDaily)
+  const deleteTask  = useTasksStore(s => s.deleteTask)
 
   return (
     <div style={{

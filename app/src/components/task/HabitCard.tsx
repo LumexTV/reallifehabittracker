@@ -19,11 +19,9 @@ const btn = (extra?: React.CSSProperties): React.CSSProperties => ({
 })
 
 export default function HabitCard({ task }: { task: Task }) {
-  const { habitClick, cycleDir, deleteTask } = useTasksStore(s => ({
-    habitClick:  s.habitClick,
-    cycleDir:    s.cycleDir,
-    deleteTask:  s.deleteTask,
-  }))
+  const habitClick = useTasksStore(s => s.habitClick)
+  const cycleDir   = useTasksStore(s => s.cycleDir)
+  const deleteTask = useTasksStore(s => s.deleteTask)
 
   return (
     <div style={{
