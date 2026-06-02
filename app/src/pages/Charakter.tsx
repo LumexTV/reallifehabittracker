@@ -7,12 +7,8 @@ import { titleFor } from '../lib/constants'
 import type { CosmeticSlot } from '../lib/database.types'
 
 const SLOT_CONFIG: { slot: CosmeticSlot; label: string; icon: string }[] = [
-  { slot: 'body',       label: 'Körper',      icon: '👤' },
-  { slot: 'hair',       label: 'Haare',       icon: '💇' },
-  { slot: 'top',        label: 'Oberteil',    icon: '👕' },
-  { slot: 'bottom',     label: 'Hose',        icon: '👖' },
-  { slot: 'accessory',  label: 'Zubehör',     icon: '💍' },
-  { slot: 'background', label: 'Hintergrund', icon: '🖼️' },
+  { slot: 'top',  label: 'Shirt', icon: '👕' },
+  { slot: 'hair', label: 'Hut',   icon: '🎩' },
 ]
 
 const RARITY_COLORS: Record<string, string> = {

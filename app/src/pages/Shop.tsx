@@ -15,21 +15,13 @@ const RARITY_COLORS: Record<string, string> = {
 }
 
 const SLOT_LABEL: Record<string, string> = {
-  background: 'Hintergrund',
-  body:       'Körper',
-  bottom:     'Hose',
-  top:        'Oberteil',
-  hair:       'Haare',
-  accessory:  'Zubehör',
+  top:  'Shirt',
+  hair: 'Hut',
 }
 
 const SLOT_ICON: Record<string, string> = {
-  background: '🖼️',
-  body:       '👤',
-  bottom:     '👖',
-  top:        '👕',
-  hair:       '💇',
-  accessory:  '💍',
+  top:  '👕',
+  hair: '🎩',
 }
 
 export default function Shop() {

@@ -8,19 +8,6 @@ type Cosmetic = {
   layer_z: number
 }
 
-const SLOT_ORDER: CosmeticSlot[] = ['background', 'body', 'bottom', 'top', 'hair', 'accessory']
-
-const SLOT_Z: Record<CosmeticSlot, number> = {
-  background: 0,
-  body: 10,
-  bottom: 20,
-  top: 30,
-  hair: 40,
-  accessory: 50,
-}
-
-const OVERLAY_SLOTS: CosmeticSlot[] = ['bottom', 'top', 'hair', 'accessory']
-
 interface Props {
   equipped: Partial<Record<CosmeticSlot, string | null>>
   cosmetics: Map<string, Cosmetic>
@@ -31,9 +18,6 @@ interface Props {
 export default function PixelAvatar({ equipped, cosmetics, size = 256, animate = false }: Props) {
   const radius = Math.round(size * 0.078)
 
-  const bgId = equipped['background']
-  const bg = bgId ? cosmetics.get(bgId) : null
-
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: size,
@@ -43,46 +27,37 @@ export default function PixelAvatar({ equipped, cosmetics, size = 256, animate =
     background: '#0d0b14',
     border: '2px solid var(--line)',
     boxShadow: '0 0 40px -10px rgba(224,178,67,.3), inset 0 0 30px rgba(0,0,0,.5)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0,
   }
 
-  const layerBase: React.CSSProperties = {
+  const layerStyle: React.CSSProperties = {
     position: 'absolute', inset: 0,
     width: '100%', height: '100%',
-    display: 'block',
+    objectFit: 'contain',
     imageRendering: 'pixelated',
+    display: 'block',
   }
+
+  const shirt = equipped['top']    ? cosmetics.get(equipped['top']!)    : null
+  const hat   = equipped['hair']   ? cosmetics.get(equipped['hair']!)   : null
 
   return (
     <div style={containerStyle}>
-      {/* Background */}
-      {bg && (
-        <img src={bg.asset_url} alt="" style={{ ...layerBase, objectFit: 'cover', zIndex: 1 }} />
-      )}
-
-      {/* Cosmetic layers: body → bottom → top → hair → accessory */}
-      {SLOT_ORDER.map(slot => {
-        if (slot === 'background') return null
-        const c = equipped[slot] ? cosmetics.get(equipped[slot]!) : null
-        if (!c) return null
-        return (
-          <img
-            key={slot}
-            src={c.asset_url}
-            alt=""
-            style={{ ...layerBase, objectFit: 'contain', zIndex: SLOT_Z[slot] }}
-          />
-        )
-      })}
-
-      {/* Character outline — always on top, provides pixel-art definition */}
+      {/* Base character */}
       <img
-        src="/sprites/base.svg"
+        src="/sprites/base64x96.png"
         alt=""
         className={animate ? 'idle-breathe' : undefined}
-        style={{ ...layerBase, objectFit: 'contain', zIndex: 100 }}
+        style={{ ...layerStyle, zIndex: 5 }}
       />
+      {/* Shirt */}
+      {shirt && (
+        <img src={shirt.asset_url} alt="" style={{ ...layerStyle, zIndex: 10 }} />
+      )}
+      {/* Hat */}
+      {hat && (
+        <img src={hat.asset_url} alt="" style={{ ...layerStyle, zIndex: 15 }} />
+      )}
     </div>
   )
 }
