@@ -1,0 +1,9 @@
+# App build & deps (app/.gitignore handles the rest inside app/)
+app/node_modules/
+app/dist/
+app/.env
+app/.env.local
+
+# OS
+.DS_Store
+Thumbs.db

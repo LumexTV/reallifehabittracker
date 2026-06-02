@@ -1,0 +1,559 @@
+<!-- LEBEN-RPG · v1 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leben-RPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0c0b10;
+    --panel: #16141d;
+    --panel-2: #1d1a26;
+    --line: #2c2838;
+    --ink: #e9e4d8;
+    --ink-dim: #8a8298;
+    --gold: #e0b243;
+    --gold-soft: #f0d489;
+    --emerald: #4caf7d;
+    --crimson: #d05a5a;
+    --blue: #6f8ad6;
+    --violet: #9b7ad0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 28px 18px 80px;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(224,178,67,.06), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(155,122,208,.05), transparent 55%),
+      var(--bg);
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><rect width='1' height='1' fill='white'/></svg>");
+  }
+  .wrap { max-width: 760px; margin: 0 auto; position: relative; z-index: 2; }
+
+  /* ---------- Character header ---------- */
+  .hero {
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 22px 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -30px rgba(0,0,0,.9);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; border-radius: 16px; pointer-events: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .crest {
+    width: 64px; height: 64px; border-radius: 14px; flex: none;
+    display: grid; place-items: center;
+    font-size: 30px;
+    background: radial-gradient(circle at 30% 25%, #2a2533, #15131c);
+    border: 1px solid var(--line);
+    box-shadow: inset 0 0 18px rgba(224,178,67,.12);
+  }
+  .hero-top { display: flex; gap: 16px; align-items: center; }
+  .who { flex: 1; min-width: 0; }
+  .name {
+    font-family: 'Cinzel', serif; font-weight: 900; font-size: 24px; letter-spacing: .5px;
+    color: var(--gold-soft); line-height: 1.1; cursor: text; outline: none; border-radius: 6px;
+  }
+  .name:focus { background: rgba(224,178,67,.08); box-shadow: 0 0 0 2px rgba(224,178,67,.25); }
+  .title { font-size: 12px; color: var(--ink-dim); margin-top: 4px; letter-spacing: .5px; }
+  .lvlbadge {
+    flex: none; text-align: center; padding: 6px 14px; border-radius: 12px;
+    background: linear-gradient(180deg, #2a2330, #1a1622);
+    border: 1px solid var(--line);
+  }
+  .lvlbadge .k { font-size: 10px; color: var(--ink-dim); letter-spacing: 2px; }
+  .lvlbadge .v { font-family: 'Cinzel', serif; font-weight: 900; font-size: 28px; color: var(--gold); line-height: 1; }
+
+  .bars { margin-top: 18px; display: grid; gap: 10px; }
+  .bar-row { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 10px; }
+  .bar-label { font-size: 11px; letter-spacing: 1px; color: var(--ink-dim); }
+  .track { height: 14px; border-radius: 8px; background: #100e16; border: 1px solid var(--line); overflow: hidden; position: relative; }
+  .fill { height: 100%; width: 0; transition: width .6s cubic-bezier(.2,.7,.2,1); border-radius: 8px 0 0 8px; }
+  .fill.xp { background: linear-gradient(90deg, var(--gold), var(--gold-soft)); box-shadow: 0 0 14px rgba(224,178,67,.5); }
+  .fill.hp { background: linear-gradient(90deg, #8a3a3a, var(--crimson)); }
+  .bar-val { font-size: 11px; color: var(--ink-dim); min-width: 78px; text-align: right; }
+  .gold-pill { font-size: 13px; color: var(--gold-soft); }
+
+  /* ---------- Attributes ---------- */
+  .attrs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 18px; }
+  .attr {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 6px; text-align: center;
+  }
+  .attr .ico { font-size: 20px; }
+  .attr .nm { font-size: 9px; letter-spacing: 1px; color: var(--ink-dim); margin-top: 3px; }
+  .attr .lv { font-family: 'Cinzel', serif; font-weight: 700; font-size: 18px; color: var(--ink); margin-top: 2px; }
+  .attr .mini { height: 4px; border-radius: 3px; background: #100e16; margin-top: 6px; overflow: hidden; }
+  .attr .mini > i { display: block; height: 100%; background: var(--violet); width: 0; transition: width .5s; }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; gap: 6px; margin: 26px 0 14px; }
+  .tab {
+    flex: 1; padding: 11px 8px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--panel); color: var(--ink-dim); font-family: inherit; font-size: 12px;
+    letter-spacing: .5px; cursor: pointer; transition: .15s; font-weight: 500;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.on { background: linear-gradient(180deg, #2a2330, #1c1825); color: var(--gold-soft); border-color: #3a3348; }
+
+  /* ---------- Task lists ---------- */
+  .panel { display: none; }
+  .panel.on { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px);} to { opacity:1; transform: none; } }
+
+  .add { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .add input[type=text] {
+    flex: 1; min-width: 140px; background: var(--panel); border: 1px solid var(--line); color: var(--ink);
+    padding: 11px 13px; border-radius: 10px; font-family: inherit; font-size: 13px; outline: none;
+  }
+  .add input:focus { border-color: var(--gold); }
+  .add select {
+    background: var(--panel); border: 1px solid var(--line); color: var(--ink-dim);
+    padding: 11px 10px; border-radius: 10px; font-family: inherit; font-size: 12px; outline: none; cursor: pointer;
+  }
+  .add button {
+    background: linear-gradient(180deg, var(--gold), #c79733); color: #1a1206; border: none;
+    padding: 0 18px; border-radius: 10px; font-family: 'Cinzel', serif; font-weight: 700; font-size: 14px;
+    cursor: pointer; letter-spacing: .5px;
+  }
+  .add button:hover { filter: brightness(1.08); }
+
+  .hint { font-size: 11px; color: var(--ink-dim); margin-bottom: 12px; line-height: 1.6; }
+
+  .list { display: grid; gap: 8px; }
+  .card {
+    display: flex; align-items: center; gap: 12px; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; transition: .15s;
+  }
+  .card:hover { border-color: #3a3348; }
+  .card.done { opacity: .42; }
+  .card .body { flex: 1; min-width: 0; }
+  .card .ttl { font-size: 14px; word-break: break-word; }
+  .card.done .ttl { text-decoration: line-through; }
+  .card .meta { font-size: 10px; color: var(--ink-dim); margin-top: 4px; letter-spacing: .5px; display:flex; gap:8px; flex-wrap:wrap; }
+  .chip { padding: 1px 7px; border-radius: 20px; border: 1px solid var(--line); }
+  .chip.e { color: var(--emerald); } .chip.m { color: var(--gold-soft); } .chip.h { color: var(--crimson); }
+  .streak { color: var(--gold); }
+
+  .act { display: flex; gap: 6px; flex: none; }
+  .btn {
+    width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel-2);
+    color: var(--ink); font-size: 18px; cursor: pointer; display: grid; place-items: center; transition: .12s; font-family: inherit;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.pos:hover { border-color: var(--emerald); color: var(--emerald); }
+  .btn.neg:hover { border-color: var(--crimson); color: var(--crimson); }
+  .btn.check { background: linear-gradient(180deg,#2a2330,#1c1825); }
+  .btn.check:hover { border-color: var(--gold); color: var(--gold); }
+  .btn.del { font-size: 14px; color: var(--ink-dim); }
+  .btn.del:hover { color: var(--crimson); border-color: var(--crimson); }
+
+  .empty { text-align: center; color: var(--ink-dim); font-size: 12px; padding: 30px 0; }
+
+  /* ---------- Toast / level up ---------- */
+  .toasts { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 50; display: grid; gap: 8px; width: max-content; max-width: 90vw; }
+  .toast {
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px;
+    font-size: 13px; box-shadow: 0 18px 40px -20px #000; animation: pop .3s ease;
+  }
+  .toast.gold { border-color: var(--gold); color: var(--gold-soft); }
+  .toast.bad { border-color: var(--crimson); color: var(--crimson); }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.96);} to { opacity:1; transform: none; } }
+
+  .levelup {
+    position: fixed; inset: 0; z-index: 60; display: none; place-items: center; pointer-events: none;
+    background: radial-gradient(circle at center, rgba(224,178,67,.18), transparent 60%);
+  }
+  .levelup .card2 {
+    text-align: center; animation: rise .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .levelup .big { font-family: 'Cinzel', serif; font-weight: 900; font-size: 52px; color: var(--gold); text-shadow: 0 0 40px rgba(224,178,67,.6); }
+  .levelup .sub { color: var(--gold-soft); letter-spacing: 4px; font-size: 14px; margin-top: 6px; }
+  @keyframes rise { from { opacity: 0; transform: translateY(40px) scale(.8);} to { opacity:1; transform: none; } }
+
+  .footer { text-align: center; margin-top: 30px; font-size: 10px; color: var(--ink-dim); letter-spacing: 1px; }
+  .footer span { cursor: pointer; }
+  .footer span:hover { color: var(--crimson); }
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-top">
+      <div class="crest">⚔️</div>
+      <div class="who">
+        <div class="name" id="name" contenteditable="true" spellcheck="false">Held</div>
+        <div class="title" id="title">Stufe 1 · Anfänger</div>
+      </div>
+      <div class="lvlbadge">
+        <div class="k">LVL</div>
+        <div class="v" id="lvl">1</div>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-label">XP</div>
+        <div class="track"><div class="fill xp" id="xpfill"></div></div>
+        <div class="bar-val" id="xpval">0 / 100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">HP</div>
+        <div class="track"><div class="fill hp" id="hpfill"></div></div>
+        <div class="bar-val" id="hpval">50 / 50</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">GOLD</div>
+        <div class="gold-pill" id="goldval" style="grid-column: 2 / span 2;">🪙 0</div>
+      </div>
+    </div>
+
+    <div class="attrs" id="attrs"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" data-tab="habits">Gewohnheiten</button>
+    <button class="tab" data-tab="dailies">Tagesroutinen</button>
+    <button class="tab" data-tab="quests">Quests</button>
+  </div>
+
+  <!-- HABITS -->
+  <div class="panel on" id="p-habits">
+    <div class="add">
+      <input type="text" id="i-habits" placeholder="z.B. 30 Min Sport, kein Fast Food …">
+      <select id="s-habits-attr"></select>
+      <select id="s-habits-diff">
+        <option value="easy">leicht</option>
+        <option value="medium" selected>mittel</option>
+        <option value="hard">schwer</option>
+      </select>
+      <button onclick="addTask('habits')">＋</button>
+    </div>
+    <div class="hint">Wiederholbar, jederzeit. ＋ für gutes Verhalten (XP & Gold), − für schlechtes (kostet HP).</div>
+    <div class="list" id="l-habits"></div>
+  </div>
+
+  <!-- DAILIES -->
+  <div class="panel" id="p-dailies">
+    <div class="add">
+      <input type="text" id="i-dailies" placeholder="z.B. Tagebuch, 1 Outbound-Block …">
+      <select id="s-dailies-attr"></select>
+      <select id="s-dailies-diff">
+        <option value="easy">leicht</option>
+        <option value="medium" selected>mittel</option>
+        <option value="hard">schwer</option>
+      </select>
+      <button onclick="addTask('dailies')">＋</button>
+    </div>
+    <div class="hint">Setzen sich jede Nacht zurück. Erledigen baut Streaks auf — verpasste kosten HP.</div>
+    <div class="list" id="l-dailies"></div>
+  </div>
+
+  <!-- QUESTS -->
+  <div class="panel" id="p-quests">
+    <div class="add">
+      <input type="text" id="i-quests" placeholder="z.B. Angebot an Cubefilm raus …">
+      <select id="s-quests-attr"></select>
+      <select id="s-quests-diff">
+        <option value="easy">leicht</option>
+        <option value="medium" selected>mittel</option>
+        <option value="hard">schwer</option>
+      </select>
+      <button onclick="addTask('quests')">＋</button>
+    </div>
+    <div class="hint">Einmalige Aufgaben. Abhaken = großer XP- & Gold-Boost, dann verschwinden sie.</div>
+    <div class="list" id="l-quests"></div>
+  </div>
+
+  <div class="footer">LEBEN-RPG · alles lokal gespeichert · <span onclick="hardReset()">Charakter zurücksetzen</span></div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<div class="levelup" id="levelup"><div class="card2"><div class="big">LEVEL UP</div><div class="sub" id="levelup-sub">STUFE 2</div></div></div>
+
+<script>
+const ATTRS = [
+  { id: 'koerper',    nm: 'KÖRPER',    ico: '💪' },
+  { id: 'geist',      nm: 'GEIST',     ico: '🧠' },
+  { id: 'disziplin',  nm: 'DISZIPLIN', ico: '⚡' },
+  { id: 'sozial',     nm: 'SOZIAL',    ico: '🤝' },
+  { id: 'arbeit',     nm: 'ARBEIT',    ico: '💼' },
+];
+const TITLES = [
+  [1,'Anfänger'],[3,'Lehrling'],[6,'Abenteurer'],[10,'Veteran'],
+  [15,'Meister'],[22,'Champion'],[30,'Legende'],[45,'Mythos']
+];
+const DIFF = {
+  easy:   { xp: 8,  gold: 5,  attr: 6,  hp: 4 },
+  medium: { xp: 15, gold: 10, attr: 12, hp: 8 },
+  hard:   { xp: 26, gold: 18, attr: 22, hp: 14 },
+};
+const KEY = 'leben_rpg_state_v1';
+
+let S = null;
+
+function defaultState() {
+  const attrs = {};
+  ATTRS.forEach(a => attrs[a.id] = 0); // accumulated points
+  return {
+    name: 'Held', level: 1, xp: 0, gold: 0, hp: 50, maxhp: 50,
+    attrs,
+    habits: [], dailies: [], quests: [],
+    lastReset: today(),
+  };
+}
+function today() { return new Date().toISOString().slice(0,10); }
+function xpForLevel(l) { return 60 + (l-1)*40; }            // XP needed to clear level l
+function attrLevel(pts) { return Math.floor(pts / 100) + 1; } // 100 pts per attr level
+function titleFor(l) { let t = TITLES[0][1]; for (const [min,nm] of TITLES) if (l>=min) t=nm; return t; }
+function uid() { return Math.random().toString(36).slice(2,9); }
+
+/* ---------- persistence ---------- */
+async function load() {
+  try {
+    const r = await window.storage.get(KEY);
+    S = r && r.value ? JSON.parse(r.value) : defaultState();
+  } catch (e) { S = defaultState(); }
+  // backfill missing fields
+  const d = defaultState();
+  for (const k in d) if (S[k] === undefined) S[k] = d[k];
+  ATTRS.forEach(a => { if (S.attrs[a.id] === undefined) S.attrs[a.id] = 0; });
+}
+let saveTimer;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    try { await window.storage.set(KEY, JSON.stringify(S), false); } catch(e){}
+  }, 120);
+}
+
+/* ---------- daily reset ---------- */
+function runDailyReset() {
+  if (S.lastReset === today()) return;
+  let missed = 0;
+  S.dailies.forEach(t => {
+    if (!t.done) { t.streak = 0; missed++; }
+    t.done = false;
+  });
+  if (missed > 0) {
+    const dmg = Math.min(missed * 4, S.hp);
+    S.hp -= dmg;
+    if (dmg > 0) queueToast(`−${dmg} HP · ${missed} Routine(n) verpasst`, 'bad');
+    checkDeath();
+  }
+  S.lastReset = today();
+  save();
+}
+
+/* ---------- core actions ---------- */
+function gainXP(amount) {
+  S.xp += amount;
+  while (S.xp >= xpForLevel(S.level)) {
+    S.xp -= xpForLevel(S.level);
+    S.level++;
+    S.maxhp += 6; S.hp = S.maxhp;
+    showLevelUp(S.level);
+  }
+}
+function gainAttr(id, pts) {
+  if (!id || pts<=0) return;
+  const before = attrLevel(S.attrs[id]);
+  S.attrs[id] += pts;
+  const after = attrLevel(S.attrs[id]);
+  if (after > before) {
+    const a = ATTRS.find(x=>x.id===id);
+    queueToast(`${a.ico} ${a.nm} → Stufe ${after}`, 'gold');
+  }
+}
+function checkDeath() {
+  if (S.hp > 0) return;
+  S.hp = Math.round(S.maxhp * 0.5);
+  const lost = Math.round(S.gold * 0.25);
+  S.gold -= lost;
+  queueToast(`💀 Ohnmacht! −${lost} Gold · HP wiederhergestellt`, 'bad');
+}
+
+function reward(diff, mult) {
+  mult = mult || 1;
+  const d = DIFF[diff] || DIFF.medium;
+  return { xp: Math.round(d.xp*mult), gold: Math.round(d.gold*mult), attr: Math.round(d.attr*mult), hp: d.hp };
+}
+
+function completeQuest(id) {
+  const t = S.quests.find(x=>x.id===id); if(!t) return;
+  const r = reward(t.diff, 1.5);
+  gainXP(r.xp); S.gold += r.gold; gainAttr(t.attr, r.attr);
+  S.hp = Math.min(S.maxhp, S.hp + 4);
+  queueToast(`✓ Quest erledigt · +${r.xp} XP · +${r.gold} 🪙`, 'gold');
+  S.quests = S.quests.filter(x=>x.id!==id);
+  save(); render();
+}
+function toggleDaily(id) {
+  const t = S.dailies.find(x=>x.id===id); if(!t) return;
+  if (t.done) { // undo
+    t.done = false; t.streak = Math.max(0,(t.streak||0)-1);
+  } else {
+    t.done = true; t.streak = (t.streak||0)+1;
+    const r = reward(t.diff, 1 + Math.min(t.streak,10)*0.05);
+    gainXP(r.xp); S.gold += r.gold; gainAttr(t.attr, r.attr);
+    S.hp = Math.min(S.maxhp, S.hp + 3);
+    queueToast(`✓ +${r.xp} XP · +${r.gold} 🪙${t.streak>1?` · 🔥${t.streak}`:''}`, 'gold');
+  }
+  save(); render();
+}
+function habitClick(id, sign) {
+  const t = S.habits.find(x=>x.id===id); if(!t) return;
+  const r = reward(t.diff, 1);
+  if (sign>0 && (t.dir==='pos'||t.dir==='both')) {
+    gainXP(r.xp); S.gold += r.gold; gainAttr(t.attr, r.attr);
+    t.count = (t.count||0)+1;
+    queueToast(`+${r.xp} XP · +${r.gold} 🪙`, 'gold');
+  } else if (sign<0 && (t.dir==='neg'||t.dir==='both')) {
+    const dmg = Math.min(r.hp, S.hp);
+    S.hp -= dmg; t.count = (t.count||0)-1;
+    queueToast(`−${dmg} HP`, 'bad');
+    checkDeath();
+  }
+  save(); render();
+}
+
+function addTask(kind) {
+  const inp = document.getElementById('i-'+kind);
+  const ttl = inp.value.trim(); if(!ttl) return;
+  const attr = document.getElementById('s-'+kind+'-attr').value;
+  const diff = document.getElementById('s-'+kind+'-diff').value;
+  const base = { id: uid(), title: ttl, attr, diff };
+  if (kind==='habits') S.habits.unshift({...base, dir:'pos', count:0});
+  if (kind==='dailies') S.dailies.unshift({...base, done:false, streak:0});
+  if (kind==='quests') S.quests.unshift({...base});
+  inp.value=''; inp.focus();
+  save(); render();
+}
+function delTask(kind, id) { S[kind] = S[kind].filter(x=>x.id!==id); save(); render(); }
+function cycleDir(id) {
+  const t = S.habits.find(x=>x.id===id); if(!t) return;
+  t.dir = t.dir==='pos' ? 'both' : t.dir==='both' ? 'neg' : 'pos';
+  save(); render();
+}
+
+/* ---------- render ---------- */
+function attrSelectHTML() {
+  return ATTRS.map(a=>`<option value="${a.id}">${a.ico} ${a.nm}</option>`).join('');
+}
+function diffChip(d){ const m={easy:'e',medium:'m',hard:'h'}, n={easy:'leicht',medium:'mittel',hard:'schwer'}; return `<span class="chip ${m[d]}">${n[d]}</span>`; }
+function attrName(id){ const a=ATTRS.find(x=>x.id===id); return a?`${a.ico}`:''; }
+
+function render() {
+  // header
+  document.getElementById('name').textContent = S.name;
+  document.getElementById('lvl').textContent = S.level;
+  document.getElementById('title').textContent = `Stufe ${S.level} · ${titleFor(S.level)}`;
+  const need = xpForLevel(S.level);
+  document.getElementById('xpfill').style.width = Math.min(100, S.xp/need*100)+'%';
+  document.getElementById('xpval').textContent = `${S.xp} / ${need}`;
+  document.getElementById('hpfill').style.width = Math.max(0, S.hp/S.maxhp*100)+'%';
+  document.getElementById('hpval').textContent = `${S.hp} / ${S.maxhp}`;
+  document.getElementById('goldval').textContent = `🪙 ${S.gold}`;
+
+  // attrs
+  document.getElementById('attrs').innerHTML = ATTRS.map(a=>{
+    const pts = S.attrs[a.id]; const lv = attrLevel(pts); const prog = pts%100;
+    return `<div class="attr"><div class="ico">${a.ico}</div><div class="nm">${a.nm}</div>
+      <div class="lv">${lv}</div><div class="mini"><i style="width:${prog}%"></i></div></div>`;
+  }).join('');
+
+  renderList('habits'); renderList('dailies'); renderList('quests');
+}
+
+function renderList(kind) {
+  const el = document.getElementById('l-'+kind);
+  const items = S[kind];
+  if (!items.length) { el.innerHTML = `<div class="empty">Noch nichts hier. Füg deine erste Aufgabe hinzu ↑</div>`; return; }
+
+  el.innerHTML = items.map(t=>{
+    if (kind==='habits') {
+      const dirTxt = t.dir==='pos'?'＋ gut':t.dir==='neg'?'− schlecht':'± beides';
+      const plus = (t.dir==='pos'||t.dir==='both') ? `<button class="btn pos" onclick="habitClick('${t.id}',1)">＋</button>`:'';
+      const minus= (t.dir==='neg'||t.dir==='both') ? `<button class="btn neg" onclick="habitClick('${t.id}',-1)">−</button>`:'';
+      return `<div class="card"><div class="body"><div class="ttl">${esc(t.title)}</div>
+        <div class="meta">${attrName(t.attr)} ${diffChip(t.diff)} <span class="chip" style="cursor:pointer" onclick="cycleDir('${t.id}')">${dirTxt}</span> <span>×${t.count||0}</span></div></div>
+        <div class="act">${minus}${plus}<button class="btn del" onclick="delTask('habits','${t.id}')">🗑</button></div></div>`;
+    }
+    if (kind==='dailies') {
+      return `<div class="card ${t.done?'done':''}"><div class="body"><div class="ttl">${esc(t.title)}</div>
+        <div class="meta">${attrName(t.attr)} ${diffChip(t.diff)} ${t.streak?`<span class="streak">🔥 ${t.streak}</span>`:''}</div></div>
+        <div class="act"><button class="btn check" onclick="toggleDaily('${t.id}')">${t.done?'↺':'✓'}</button>
+        <button class="btn del" onclick="delTask('dailies','${t.id}')">🗑</button></div></div>`;
+    }
+    return `<div class="card"><div class="body"><div class="ttl">${esc(t.title)}</div>
+      <div class="meta">${attrName(t.attr)} ${diffChip(t.diff)}</div></div>
+      <div class="act"><button class="btn check" onclick="completeQuest('${t.id}')">✓</button>
+      <button class="btn del" onclick="delTask('quests','${t.id}')">🗑</button></div></div>`;
+  }).join('');
+}
+function esc(s){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------- feedback ---------- */
+function queueToast(txt, cls) {
+  const t = document.createElement('div');
+  t.className = 'toast ' + (cls||'');
+  t.textContent = txt;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>{ t.style.transition='opacity .4s, transform .4s'; t.style.opacity='0'; t.style.transform='translateY(10px)'; }, 2200);
+  setTimeout(()=> t.remove(), 2700);
+}
+function showLevelUp(l) {
+  const ov = document.getElementById('levelup');
+  document.getElementById('levelup-sub').textContent = 'STUFE ' + l;
+  ov.style.display='grid';
+  setTimeout(()=> ov.style.display='none', 1600);
+}
+
+/* ---------- misc handlers ---------- */
+function hardReset() {
+  if (!confirm('Charakter wirklich zurücksetzen? Alles wird gelöscht.')) return;
+  S = defaultState(); save(); render();
+}
+document.getElementById('name').addEventListener('blur', e=>{
+  S.name = (e.target.textContent.trim() || 'Held').slice(0,24);
+  e.target.textContent = S.name; save(); render();
+});
+document.getElementById('name').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur(); }});
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+    tab.classList.add('on');
+    document.getElementById('p-'+tab.dataset.tab).classList.add('on');
+  });
+});
+
+/* ---------- boot ---------- */
+(async function init(){
+  ['habits','dailies','quests'].forEach(k=>{
+    document.getElementById('s-'+k+'-attr').innerHTML = attrSelectHTML();
+  });
+  await load();
+  runDailyReset();
+  render();
+  // seed examples on first ever run
+  if (!S.habits.length && !S.dailies.length && !S.quests.length && S.level===1 && S.xp===0) {
+    S.habits.push({id:uid(),title:'30 Min Sport',attr:'koerper',diff:'medium',dir:'pos',count:0});
+    S.dailies.push({id:uid(),title:'1 Outbound-Block',attr:'arbeit',diff:'hard',done:false,streak:0});
+    S.quests.push({id:uid(),title:'Erste eigene Aufgabe anlegen',attr:'geist',diff:'easy'});
+    save(); render();
+  }
+})();
+</script>
