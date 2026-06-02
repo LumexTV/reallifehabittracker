@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2816 1536" shape-rendering="crispEdges">
+  <!-- Left lens frame -->
+  <rect x="1294" y="402" width="92" height="62" fill="#667788"/>
+  <!-- Left lens inner -->
+  <rect x="1302" y="410" width="76" height="46" fill="#1A2030" opacity="0.55"/>
+  <!-- Left lens reflection -->
+  <rect x="1304" y="412" width="22" height="14" fill="#AABBCC" opacity="0.55"/>
+  <!-- Right lens frame -->
+  <rect x="1430" y="402" width="92" height="62" fill="#667788"/>
+  <!-- Right lens inner -->
+  <rect x="1438" y="410" width="76" height="46" fill="#1A2030" opacity="0.55"/>
+  <!-- Right lens reflection -->
+  <rect x="1440" y="412" width="22" height="14" fill="#AABBCC" opacity="0.55"/>
+  <!-- Frame top highlight -->
+  <rect x="1294" y="402" width="92" height="8" fill="#8899AA"/>
+  <rect x="1430" y="402" width="92" height="8" fill="#8899AA"/>
+  <!-- Bridge -->
+  <rect x="1382" y="422" width="52" height="18" fill="#667788"/>
+  <!-- Left arm -->
+  <rect x="1238" y="418" width="60" height="14" fill="#667788"/>
+  <!-- Right arm -->
+  <rect x="1518" y="418" width="60" height="14" fill="#667788"/>
+</svg>

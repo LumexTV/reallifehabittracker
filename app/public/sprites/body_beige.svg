@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2816 1536" shape-rendering="crispEdges">
+  <!-- Head -->
+  <rect x="1278" y="240" width="260" height="340" fill="#C8956A"/>
+  <rect x="1278" y="240" width="70" height="340" fill="#D4A878"/>
+  <rect x="1438" y="240" width="100" height="340" fill="#AA6E44"/>
+  <!-- Ears -->
+  <rect x="1128" y="386" width="56" height="50" fill="#C8956A"/>
+  <rect x="1632" y="386" width="56" height="50" fill="#C8956A"/>
+  <!-- Neck -->
+  <rect x="1352" y="578" width="112" height="80" fill="#C8956A"/>
+  <!-- Shoulders bar -->
+  <rect x="1128" y="638" width="560" height="52" fill="#C8956A"/>
+  <!-- Torso -->
+  <rect x="1258" y="688" width="300" height="252" fill="#C8956A"/>
+  <rect x="1438" y="688" width="120" height="252" fill="#AA6E44"/>
+  <!-- Left upper arm -->
+  <rect x="1128" y="648" width="140" height="240" fill="#C8956A"/>
+  <rect x="1208" y="648" width="60" height="240" fill="#AA6E44"/>
+  <!-- Right upper arm -->
+  <rect x="1548" y="648" width="140" height="240" fill="#C8956A"/>
+  <!-- Left forearm -->
+  <rect x="1148" y="888" width="112" height="196" fill="#C8956A"/>
+  <!-- Right forearm -->
+  <rect x="1556" y="888" width="112" height="196" fill="#C8956A"/>
+  <!-- Left hand -->
+  <rect x="1138" y="1076" width="122" height="60" fill="#C8956A"/>
+  <!-- Right hand -->
+  <rect x="1556" y="1076" width="122" height="60" fill="#C8956A"/>
+  <!-- Hips -->
+  <rect x="1216" y="940" width="384" height="56" fill="#C8956A"/>
+  <!-- Left thigh -->
+  <rect x="1216" y="992" width="172" height="208" fill="#C8956A"/>
+  <rect x="1336" y="992" width="52" height="208" fill="#AA6E44"/>
+  <!-- Right thigh -->
+  <rect x="1428" y="992" width="172" height="208" fill="#C8956A"/>
+  <!-- Left shin -->
+  <rect x="1228" y="1200" width="148" height="160" fill="#C8956A"/>
+  <!-- Right shin -->
+  <rect x="1440" y="1200" width="148" height="160" fill="#C8956A"/>
+</svg>

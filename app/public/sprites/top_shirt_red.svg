@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2816 1536" shape-rendering="crispEdges">
+  <!-- Collar -->
+  <rect x="1330" y="638" width="156" height="52" fill="#991111"/>
+  <rect x="1376" y="660" width="64" height="30" fill="#CC2222"/>
+  <!-- Left shoulder -->
+  <rect x="1128" y="638" width="216" height="52" fill="#CC2222"/>
+  <!-- Right shoulder -->
+  <rect x="1472" y="638" width="216" height="52" fill="#CC2222"/>
+  <!-- Torso -->
+  <rect x="1258" y="688" width="300" height="252" fill="#CC2222"/>
+  <rect x="1258" y="688" width="80" height="252" fill="#DD3333"/>
+  <rect x="1438" y="688" width="120" height="252" fill="#AA1111"/>
+  <!-- Left sleeve -->
+  <rect x="1128" y="688" width="140" height="220" fill="#CC2222"/>
+  <rect x="1128" y="688" width="44" height="220" fill="#DD3333"/>
+  <rect x="1224" y="688" width="44" height="220" fill="#AA1111"/>
+  <!-- Right sleeve -->
+  <rect x="1548" y="688" width="140" height="220" fill="#CC2222"/>
+  <rect x="1548" y="688" width="44" height="220" fill="#DD3333"/>
+  <rect x="1644" y="688" width="44" height="220" fill="#AA1111"/>
+  <!-- Sleeve cuffs -->
+  <rect x="1128" y="884" width="140" height="22" fill="#881111"/>
+  <rect x="1548" y="884" width="140" height="22" fill="#881111"/>
+  <!-- Shirt hem -->
+  <rect x="1258" y="918" width="300" height="22" fill="#991111"/>
+</svg>

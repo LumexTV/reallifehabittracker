@@ -19,64 +19,95 @@ const SLOT_Z: Record<CosmeticSlot, number> = {
   accessory: 50,
 }
 
+const OVERLAY_SLOTS: CosmeticSlot[] = ['bottom', 'top', 'hair', 'accessory']
+
 interface Props {
   equipped: Partial<Record<CosmeticSlot, string | null>>
   cosmetics: Map<string, Cosmetic>
   size?: number
-  src?: string      // Direct sprite — bypasses layer system
-  animate?: boolean // Idle breathing animation
+  src?: string
+  animate?: boolean
 }
 
 export default function PixelAvatar({ equipped, cosmetics, size = 256, src, animate = false }: Props) {
   const radius = Math.round(size * 0.078)
 
+  const bgId = equipped['background']
+  const bg = bgId ? cosmetics.get(bgId) : null
+
+  const containerStyle: React.CSSProperties = {
+    position: 'relative',
+    width: size,
+    height: size,
+    borderRadius: radius,
+    overflow: 'hidden',
+    background: '#0d0b14',
+    border: '2px solid var(--line)',
+    boxShadow: '0 0 40px -10px rgba(224,178,67,.3), inset 0 0 30px rgba(0,0,0,.5)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0,
+  }
+
+  const layerBase: React.CSSProperties = {
+    position: 'absolute', inset: 0,
+    width: '100%', height: '100%',
+    display: 'block',
+    imageRendering: 'pixelated',
+  }
+
   return (
-    <div style={{
-      position: 'relative',
-      width: size,
-      height: size,
-      borderRadius: radius,
-      overflow: 'hidden',
-      background: '#0d0b14',
-      border: '2px solid var(--line)',
-      boxShadow: '0 0 40px -10px rgba(224,178,67,.3), inset 0 0 30px rgba(0,0,0,.5)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      flexShrink: 0,
-    }}>
-      {src ? (
+    <div style={containerStyle}>
+      {/* Background: always behind everything, cover-fills the square */}
+      {bg && (
         <img
-          src={src}
+          src={bg.asset_url}
           alt=""
-          className={animate ? 'idle-breathe' : 'pixelated'}
-          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+          style={{ ...layerBase, objectFit: 'cover', zIndex: 1 }}
         />
+      )}
+
+      {src ? (
+        <>
+          {/* Base character sprite */}
+          <img
+            src={src}
+            alt=""
+            className={animate ? 'idle-breathe' : undefined}
+            style={{ ...layerBase, objectFit: 'contain', zIndex: 5 }}
+          />
+          {/* Clothing/hair/accessory overlays aligned to sprite */}
+          {OVERLAY_SLOTS.map(slot => {
+            const c = equipped[slot] ? cosmetics.get(equipped[slot]!) : null
+            if (!c) return null
+            return (
+              <img
+                key={slot}
+                src={c.asset_url}
+                alt=""
+                style={{ ...layerBase, objectFit: 'contain', zIndex: SLOT_Z[slot] + 10 }}
+              />
+            )
+          })}
+        </>
       ) : (
         <>
+          {/* Pure layer mode: 👤 placeholder + full cosmetic stack */}
           <div style={{
-            position: 'absolute', inset: 0, zIndex: 1,
+            position: 'absolute', inset: 0, zIndex: 2,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: size * 0.35, opacity: 0.1, userSelect: 'none', pointerEvents: 'none',
           }}>
             👤
           </div>
-
           {SLOT_ORDER.map(slot => {
-            const cosmeticId = equipped[slot]
-            const cosmetic = cosmeticId ? cosmetics.get(cosmeticId) : null
-            if (!cosmetic) return null
+            const c = equipped[slot] ? cosmetics.get(equipped[slot]!) : null
+            if (!c) return null
             return (
               <img
                 key={slot}
-                src={cosmetic.asset_url}
+                src={c.asset_url}
                 alt=""
-                style={{
-                  position: 'absolute', inset: 0,
-                  width: '100%', height: '100%',
-                  imageRendering: 'pixelated',
-                  zIndex: SLOT_Z[slot] + 2,
-                  objectFit: 'contain',
-                  display: 'block',
-                }}
+                style={{ ...layerBase, objectFit: 'contain', zIndex: SLOT_Z[slot] + 3 }}
               />
             )
           })}
