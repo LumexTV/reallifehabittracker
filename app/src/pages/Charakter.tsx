@@ -86,7 +86,6 @@ export default function Charakter() {
           cosmetics={cosmeticMap}
           size={256}
           src={SPRITES[dir]}
-          animate
         />
 
         {/* Direction buttons */}
