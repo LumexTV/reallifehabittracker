@@ -14,13 +14,13 @@ DELETE FROM cosmetics;
 INSERT INTO cosmetics (id, slot, name, rarity, layer_z, asset_url, unlock_type, price_gold, price_real)
 VALUES
   -- Shirts
-  ('00000000-0000-0000-0004-000000000001', 'top',  'Blue Shirt',    'common',   30, '/sprites/blueshirt.svg',    'starter', null, null),
-  ('00000000-0000-0000-0004-000000000002', 'top',  'Purple Shirt',  'uncommon', 30, '/sprites/purpleshirt.svg',  'shop',    150,  null),
-  ('00000000-0000-0000-0004-000000000003', 'top',  'Yellow Shirt',  'rare',     30, '/sprites/yellowshirt.svg',  'shop',    200,  null),
+  ('00000000-0000-0000-0004-000000000001', 'top',  'Blue Shirt',    'common',   30, '/sprites/blueshirt.png',    'starter', null, null),
+  ('00000000-0000-0000-0004-000000000002', 'top',  'Purple Shirt',  'uncommon', 30, '/sprites/purpleshirt.png',  'shop',    150,  null),
+  ('00000000-0000-0000-0004-000000000003', 'top',  'Yellow Shirt',  'rare',     30, '/sprites/yellowshirt.png',  'shop',    200,  null),
   -- Hüte
-  ('00000000-0000-0000-0005-000000000001', 'hair', 'Blue Hat',      'common',   40, '/sprites/bluehat.svg',      'starter', null, null),
-  ('00000000-0000-0000-0005-000000000002', 'hair', 'Green Hat',     'uncommon', 40, '/sprites/greenhat.svg',     'shop',    120,  null),
-  ('00000000-0000-0000-0005-000000000003', 'hair', 'Red Hat',       'rare',     40, '/sprites/redhat.svg',       'shop',    180,  null)
+  ('00000000-0000-0000-0005-000000000001', 'hair', 'Blue Hat',      'common',   40, '/sprites/bluehat.png',      'starter', null, null),
+  ('00000000-0000-0000-0005-000000000002', 'hair', 'Green Hat',     'uncommon', 40, '/sprites/greenhat.png',     'shop',    120,  null),
+  ('00000000-0000-0000-0005-000000000003', 'hair', 'Red Hat',       'rare',     40, '/sprites/redhat.png',       'shop',    180,  null)
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   asset_url = EXCLUDED.asset_url,
