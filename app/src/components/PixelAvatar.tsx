@@ -31,33 +31,44 @@ export default function PixelAvatar({ equipped, cosmetics, size = 256, animate =
   }
 
   const layerStyle: React.CSSProperties = {
-    position: 'absolute', inset: 0,
-    width: '100%', height: '100%',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
     objectFit: 'contain',
     imageRendering: 'pixelated',
     display: 'block',
   }
 
-  const shirt = equipped['top']    ? cosmetics.get(equipped['top']!)    : null
-  const hat   = equipped['hair']   ? cosmetics.get(equipped['hair']!)   : null
+  // Collect all equipped cosmetics, sorted by layer_z so they stack in correct order
+  const layers = (Object.values(equipped) as (string | null | undefined)[])
+    .filter((id): id is string => !!id)
+    .map(id => cosmetics.get(id))
+    .filter((c): c is Cosmetic => c !== undefined)
+    .sort((a, b) => a.layer_z - b.layer_z)
 
   return (
     <div style={containerStyle}>
-      {/* Base character */}
+      {/* Base character sprite — always on bottom */}
       <img
         src="/sprites/base64x96.png"
         alt=""
         className={animate ? 'idle-breathe' : undefined}
-        style={{ ...layerStyle, zIndex: 5 }}
+        style={{ ...layerStyle, zIndex: 1 }}
       />
-      {/* Shirt */}
-      {shirt && (
-        <img src={shirt.asset_url} alt="" style={{ ...layerStyle, zIndex: 10 }} />
-      )}
-      {/* Hat */}
-      {hat && (
-        <img src={hat.asset_url} alt="" style={{ ...layerStyle, zIndex: 15 }} />
-      )}
+
+      {/* Equipped cosmetic layers in z order */}
+      {layers.map(cosmetic => (
+        <img
+          key={cosmetic.id}
+          src={cosmetic.asset_url}
+          alt=""
+          style={{ ...layerStyle, zIndex: cosmetic.layer_z + 10 }}
+        />
+      ))}
     </div>
   )
 }
