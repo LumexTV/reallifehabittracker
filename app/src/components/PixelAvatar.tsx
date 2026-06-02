@@ -25,11 +25,10 @@ interface Props {
   equipped: Partial<Record<CosmeticSlot, string | null>>
   cosmetics: Map<string, Cosmetic>
   size?: number
-  src?: string
   animate?: boolean
 }
 
-export default function PixelAvatar({ equipped, cosmetics, size = 256, src, animate = false }: Props) {
+export default function PixelAvatar({ equipped, cosmetics, size = 256, animate = false }: Props) {
   const radius = Math.round(size * 0.078)
 
   const bgId = equipped['background']
@@ -57,62 +56,33 @@ export default function PixelAvatar({ equipped, cosmetics, size = 256, src, anim
 
   return (
     <div style={containerStyle}>
-      {/* Background: always behind everything, cover-fills the square */}
+      {/* Background */}
       {bg && (
-        <img
-          src={bg.asset_url}
-          alt=""
-          style={{ ...layerBase, objectFit: 'cover', zIndex: 1 }}
-        />
+        <img src={bg.asset_url} alt="" style={{ ...layerBase, objectFit: 'cover', zIndex: 1 }} />
       )}
 
-      {src ? (
-        <>
-          {/* Base character sprite */}
+      {/* Cosmetic layers: body → bottom → top → hair → accessory */}
+      {SLOT_ORDER.map(slot => {
+        if (slot === 'background') return null
+        const c = equipped[slot] ? cosmetics.get(equipped[slot]!) : null
+        if (!c) return null
+        return (
           <img
-            src={src}
+            key={slot}
+            src={c.asset_url}
             alt=""
-            className={animate ? 'idle-breathe' : undefined}
-            style={{ ...layerBase, objectFit: 'contain', zIndex: 5 }}
+            style={{ ...layerBase, objectFit: 'contain', zIndex: SLOT_Z[slot] }}
           />
-          {/* Clothing/hair/accessory overlays aligned to sprite */}
-          {OVERLAY_SLOTS.map(slot => {
-            const c = equipped[slot] ? cosmetics.get(equipped[slot]!) : null
-            if (!c) return null
-            return (
-              <img
-                key={slot}
-                src={c.asset_url}
-                alt=""
-                style={{ ...layerBase, objectFit: 'contain', zIndex: SLOT_Z[slot] + 10 }}
-              />
-            )
-          })}
-        </>
-      ) : (
-        <>
-          {/* Pure layer mode: 👤 placeholder + full cosmetic stack */}
-          <div style={{
-            position: 'absolute', inset: 0, zIndex: 2,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: size * 0.35, opacity: 0.1, userSelect: 'none', pointerEvents: 'none',
-          }}>
-            👤
-          </div>
-          {SLOT_ORDER.map(slot => {
-            const c = equipped[slot] ? cosmetics.get(equipped[slot]!) : null
-            if (!c) return null
-            return (
-              <img
-                key={slot}
-                src={c.asset_url}
-                alt=""
-                style={{ ...layerBase, objectFit: 'contain', zIndex: SLOT_Z[slot] + 3 }}
-              />
-            )
-          })}
-        </>
-      )}
+        )
+      })}
+
+      {/* Character outline — always on top, provides pixel-art definition */}
+      <img
+        src="/sprites/base.svg"
+        alt=""
+        className={animate ? 'idle-breathe' : undefined}
+        style={{ ...layerBase, objectFit: 'contain', zIndex: 100 }}
+      />
     </div>
   )
 }
